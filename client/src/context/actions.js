@@ -1,6 +1,6 @@
 /* eslint-disable */
-// const ROOT_URL = "https://balls-of-war.herokuapp.com/";
-const ROOT_URL = "http://localhost:3000";
+const ROOT_URL = "https://balls-of-war.herokuapp.com/";
+// const ROOT_URL = "http://localhost:3000";
 
 export async function loginUser(dispatch, loginPayload) {
   const requestOptions = {
