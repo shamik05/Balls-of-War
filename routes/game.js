@@ -8,13 +8,12 @@ const {
 router.get("/check", isAuthenticated, async (req, res) => {
   console.log(req.user);
   Game.findOne({ user: req.user.id }).then((game) => {
-    console.log(game);
     res.json(game);
   });
 });
 
 router.get("/:id", isAuthenticated, async (req, res) => {
-  await getGame(req.params.id).then((game) => {
+  getGame(req.params.id).then((game) => {
     res.json(game);
   });
 });
@@ -47,7 +46,7 @@ router.put("/:id/:method", isAuthenticated, async (req, res) => {
   const { id, method } = req.params;
   const state = await getGame(id);
   checkGame(state);
-
+  let result = null;
   switch (method) {
   case "deckClick":
     await setHand(id);
@@ -56,14 +55,14 @@ router.put("/:id/:method", isAuthenticated, async (req, res) => {
     await setOppHand(id);
     break;
   case "statClick":
-    await statClick(id, req.body.stat);
+    result = await statClick(id, req.body.stat);
     break;
   default:
     break;
   }
 
   const game = await getGame(id);
-  res.json(game);
+  res.json({ game, winner: result });
 });
 
 module.exports = router;
